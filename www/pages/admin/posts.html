@@ -1,0 +1,51 @@
+<div data-name="admin" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">GAME POSTS</div>
+
+      <!-- Right Navbar -->
+      <div class="right">
+        <a class="link">Save</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+
+    <div class="searchbar-backdrop"></div>
+    <div class="list searchbar-found search-here" style="margin: 0px;">
+      <div class="list-block">
+        <ul id="listPosts">
+          <script type="text/template7" id="t7Posts">
+            {{#each posts}}
+              <li>
+                <a href="/post/{{idPost}}/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title search-item">POS {{idPost}}</div>
+                    <div class="item-after"><span class="badge color-red">{{score}}</span></div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+          </script>
+        </ul>
+      </div>
+    </div>
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+  </div>
+
+</div>

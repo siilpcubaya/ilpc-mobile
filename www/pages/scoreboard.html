@@ -1,0 +1,52 @@
+<div data-name="scoreboard" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+      <!-- Navbar Title -->
+      <div class="title">Scoreboard</div>
+    </div>
+  </div>
+  
+  <!-- Content-->
+  <div class="page-content about-content">
+    <div class="data-table data-table-init card">
+      <!-- Card Header -->
+      <div class="card-header">
+        <!-- Table title -->
+        <div class="data-table-title">Live Scoreboard</div>
+      </div>
+      <!-- Card Content -->
+      <div class="card-content">
+        <table>
+          <thead>
+            <tr>
+              <th class="label-cell">RANK</th>
+              <th class="label-cell">TEAM</th>
+              <th class="label-cell">CURRENT<br>SCORE</th>
+            </tr>
+          </thead>
+          <tbody id="listScoreboard">
+            <script type="text/template7" id="t7Scoreboard">
+              {{#each teams}}
+                <tr>
+                  <td class="label-cell">{{rank}}</td>
+                  <td class="label-cell">{{name}}</td>
+                  <td class="numeric-cell">{{score}}</td>
+                </tr>
+              {{/each}}
+            </script>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

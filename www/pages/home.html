@@ -1,0 +1,92 @@
+<div data-name="home" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">HOME</div>
+
+      <!-- Right Navbar -->
+      <div class="right">
+        <!-- Link to enable searchbar -->
+        <a class="link icon-only searchbar-enable" data-searchbar=".searchbar">
+          <i class="f7-icons">search</i>
+          <!-- <i class="icon material-icons md-only">search</i> -->
+        </a>
+      </div>
+
+      <!-- Searchbar is a direct child of "navbar-inner" -->
+      <form class="searchbar searchbar-expandable searchbar-init" 
+            data-search-container=".search-here" 
+            data-search-in=".search-item">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search"/>
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+    <div class="block">
+      <h4 class="text-align-center" id="postType"></h4>
+      <h2 class="text-align-center" id="postId"></h2>
+      <h4 class="text-align-center" id="postName"></h4>
+    </div>
+
+    <div class="searchbar-backdrop"></div>
+    <div class="list searchbar-found search-here" style="margin: 0px;">
+      <div class="list-block">
+        
+        <ul id="listTeamsNotDone">
+          <script type="text/template7" id="t7TeamsNotDone">
+            <li class="item-divider text-align-center">Not done yet</li>
+            {{#each notdone}}
+              <li>
+                <a href="/score/{{idTeam}}/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title search-item">{{name}}</div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+          </script>
+        </ul>
+
+        <ul id="listTeamsDone">
+          <script type="text/template7" id="t7TeamsDone">
+          <li class="item-divider text-align-center">Done playing</li>
+            {{#each done}}
+              <li>
+                <a href="/score/{{idTeam}}/" class="item-link item-content">
+                  <div class="item-inner">
+                    <div class="item-title search-item">{{name}}</div>
+                    <div class="item-after"><span class="badge color-red">{{score}}</span></div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+          </script>
+        </ul>
+      </div>
+    </div>
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+  </div>
+
+</div>

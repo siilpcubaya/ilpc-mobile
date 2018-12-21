@@ -1,0 +1,300 @@
+<div data-name="admin" class="page">
+
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">GAME POSTS</div>
+
+      <!-- Right Navbar -->
+      <div class="right">
+        <a class="link icon-only searchbar-enable" data-searchbar=".searchbar">
+          <i class="f7-icons">search</i>
+        </a>
+      </div>
+
+      <!-- Searchbar is a direct child of "navbar-inner" -->
+      <form class="searchbar searchbar-expandable searchbar-init" 
+            data-search-container=".search-here" 
+            data-search-in=".search-item">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search"/>
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <div class="fab fab-right-bottom color-black">
+    <a href="#">
+      <i class="icon f7-icons">add</i>
+      <i class="icon f7-icons">close</i>
+    </a>
+
+    <!-- FAB speed dial actions with labels -->
+    <div class="fab-buttons fab-buttons-top">
+      <a href="#" class="fab-label-button sheet-open" data-sheet="#game-modal-sheet">
+        <span><i class="fas fa-gamepad fa-2x"></i></span>
+        <span class="fab-label">Add Game</span>
+      </a>
+      <a href="#" class="fab-label-button sheet-open" data-sheet="#post-modal-sheet">
+        <i class="fas fa-flag-checkered fa-2x"></i>
+        <span class="fab-label">Add Post</span>
+      </a>
+      <a href="#" class="fab-label-button sheet-open" data-sheet="#guard-modal-sheet">
+        <i class="fas fa-user fa-2x"></i>
+        <span class="fab-label">Set Guard</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+
+    <div class="searchbar-backdrop"></div>
+    <div class="list searchbar-found search-here" style="margin: 0px;">
+      <div class="list-block">
+        <ul id="listPosts">
+          <script type="text/template7" id="t7Posts">
+          <li class="item-divider text-align-center">Rally</li>
+          {{#each rally}}
+            <li>
+              <a href="/post/{{idPost}}/" class="item-link item-content">
+                <div class="item-inner">
+                  <div class="item-title search-item">POS {{idPost}}</div>
+                </div>
+              </a>
+            </li>
+          {{/each}}
+
+          <li class="item-divider text-align-center">Logical</li>
+          {{#each logic}}
+            <li>
+              <a href="/post/{{idPost}}/" class="item-link item-content">
+                <div class="item-inner">
+                  <div class="item-title search-item">POS {{idPost}}</div>
+                </div>
+              </a>
+            </li>
+          {{/each}}
+
+          <li class="item-divider text-align-center">Programming</li>
+          {{#each program}}
+            <li>
+              <a href="/post/{{idPost}}/" class="item-link item-content">
+                <div class="item-inner">
+                  <div class="item-title search-item">POS {{idPost}}</div>
+                </div>
+              </a>
+            </li>
+          {{/each}}
+          </script>
+        </ul>
+      </div>
+    </div>
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+
+    <!-------------->
+    <!-- Add Game -->
+    <!-------------->
+    <div class="sheet-modal custom-modal" id="game-modal-sheet">
+
+      <div class="toolbar color-black">
+        <div class="toolbar-inner">
+          <div class="left block">Add Game</div>
+          <div class="right"><a class="link sheet-close" href="#"><i class="icon f7-icons">close</i></a></div>
+        </div>
+      </div>
+
+      <div class="sheet-modal-inner custom-modal-inner">
+        <form>
+          <div class="list">
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Game Name</div>
+                  <div class="item-input">
+                    <input type="text" name="gameName" id="gameName" placeholder="Game Name" autofocus required>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Game Type</div>
+                  <div class="item-input">
+                    <select name="gameType" id="selectGameType">
+                      <option value="-1" selected>--Choose Game Type--</option>
+                      <script type="text/template7" id="t7GameType">
+                      {{#each gameType}}
+                        <option value="{{id}}">{{type}}</option>
+                      {{/each}}
+                      </script>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Post Type</div>
+                  <div class="item-input">
+                    <select name="postType" id="selectPostType">
+                      <option value="-1" selected>--Choose Post Type--</option>
+                      <script type="text/template7" id="t7PostType">
+                      {{#each postType}}
+                        <option value="{{id}}">{{type}}</option>
+                      {{/each}}
+                      </script>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label"></div>
+                  <div class="item-input">
+                    <a href="#" id="btnAddGame" class="button button-fill button-round color-black">Insert Game</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+
+    <!-------------->
+    <!-- Add Post -->
+    <!-------------->
+    <div class="sheet-modal custom-modal" id="post-modal-sheet">
+
+      <div class="toolbar color-black">
+        <div class="toolbar-inner">
+          <div class="left block">Add Post</div>
+          <div class="right"><a class="link sheet-close" href="#"><i class="icon f7-icons">close</i></a></div>
+        </div>
+      </div>
+
+      <div class="sheet-modal-inner custom-modal-inner">  
+        <form>
+          <div class="list">
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Post ID</div>
+                  <div class="item-input">
+                    <input type="text" name="postId" id="postId" placeholder="Post ID (left blank for auto increment)" autofocus required>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Game Name</div>
+                  <div class="item-input">
+                    <select name="postGame" id="selectPostGame">
+                      <option value="-1" selected>--Choose Game --</option>
+                      <script type="text/template7" id="t7PostGame">
+                      {{#each game}}
+                        <option value="{{id}}" {{selected}}>{{name}} ({{gameType}}-{{postType}})</option>
+                      {{/each}}
+                      </script>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label"></div>
+                  <div class="item-input">
+                    <a href="#" id="btnAddPost" class="button button-fill button-round color-black">Insert Post</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!--------------->
+    <!-- Set Guard -->
+    <!--------------->
+    <div class="sheet-modal custom-modal" id="guard-modal-sheet">
+
+      <div class="toolbar color-black">
+        <div class="toolbar-inner">
+          <div class="left block">Set Guard</div>
+          <div class="right"><a class="link sheet-close" href="#"><i class="icon f7-icons">close</i></a></div>
+        </div>
+      </div>
+
+      <div class="sheet-modal-inner custom-modal-inner">  
+        <form>
+          <div class="list">
+            <ul>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Guard Username</div>
+                  <div class="item-input">
+                    <select name="guardUsername" id="selectGuardUsername">
+                      <option value="-1" selected>-- Choose Guard Username --</option>
+                      <script type="text/template7" id="t7GuardUsername">
+                      {{#each guard}}
+                        <option value="{{id}}">{{username}}</option>
+                      {{/each}}
+                      </script>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label">Game</div>
+                  <div class="item-input">
+                    <select name="gameId" id="selectGuardGame">
+                      <option value="-1" selected>-- Choose Guard Game --</option>
+                      <script type="text/template7" id="t7GuardGame">
+                      {{#each game}}
+                        <option value="{{id}}">{{name}}</option>
+                      {{/each}}
+                      </script>
+                    </select>
+                  </div>
+                </div>
+              </li>
+              <li class="item-content item-input">
+                <div class="item-inner">
+                  <div class="item-title item-label"></div>
+                  <div class="item-input">
+                    <a href="#" id="btnSetGuard" class="button button-fill button-round color-black">Set Guard</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

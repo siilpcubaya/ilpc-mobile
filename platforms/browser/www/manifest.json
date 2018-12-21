@@ -1,0 +1,12 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "ILPC Mobile",
+  "short_name": "ILPC Mobile",
+  "version": "com.ilpc.mobile",
+  "description": "ILPC Mobile is a mobile apps for ILPC UBAYA.",
+  "author": "ILPC 2019 Information System Team",
+  "icons": [],
+  "start_url": "index.html",
+  "theme_color": "#2196f3"
+}

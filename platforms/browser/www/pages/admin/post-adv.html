@@ -1,0 +1,114 @@
+<div data-name="admin" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">GAME POSTS</div>
+
+      <!-- Right Navbar -->
+      <div class="right">
+        <a class="link icon-only searchbar-enable" data-searchbar=".searchbar">
+          <i class="f7-icons">search</i>
+        </a>
+      </div>
+
+      <!-- Searchbar is a direct child of "navbar-inner" -->
+      <form class="searchbar searchbar-expandable searchbar-init" 
+            data-search-container=".search-here" 
+            data-search-in=".search-item">
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search"/>
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+
+    <div class="searchbar-backdrop"></div>
+    <div class="list searchbar-found search-here" style="margin: 0px;">
+      <div class="list-block">
+        <ul id="listPostsAdv">
+          <script type="text/template7" id="t7PostsAdv">
+            <li class="item-divider text-align-center">Rally</li>
+            {{#each rally}}
+              <li>
+                <a class="item-link smart-select smart-select-init">
+                  <select name="gameRally">
+                    {{#each games}}
+                      <option value="{{idGame}}" {{selected}}>{{name}}</option>
+                    {{/each}}
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title search-item">POST {{idPost}}</div>
+                      <div class="item-after">{{current}}</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+
+            <li class="item-divider text-align-center">Logical</li>
+            {{#each logic}}
+              <li>
+                <a class="item-link smart-select smart-select-init" data-open-in="popover">
+                  <select name="gameLogic">
+                    {{#each games}}
+                      <option value="{{idGame}}" {{selected}}>{{name}}</option>
+                    {{/each}}
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title search-item">POST {{idPost}}</div>
+                      <div class="item-after">{{current}}</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+
+            <li class="item-divider text-align-center">Programming</li>
+            {{#each program}}
+              <li>
+                <a class="item-link smart-select smart-select-init" data-open-in="popover">
+                  <select name="gameProgram">
+                    {{#each games}}
+                      <option value="{{idGame}}" {{selected}}>{{name}}</option>
+                    {{/each}}
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title search-item">POST {{idPost}}</div>
+                      <div class="item-after">{{current}}</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            {{/each}}
+          </script>
+        </ul>
+      </div>
+    </div>
+    <div class="block searchbar-not-found">
+      <div class="block-inner">Nothing found</div>
+    </div>
+  </div>
+
+</div>

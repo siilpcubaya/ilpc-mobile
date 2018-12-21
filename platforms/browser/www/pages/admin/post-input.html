@@ -1,0 +1,62 @@
+<div data-name="admin" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="/post/" data-panel="left">
+            <i class="f7-icons">left</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">UPDATE GAME POST</div>
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+    <form class="list form-store-data" id="gameForm">
+      <ul>
+
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Post Name</div>
+              <div class="item-input-wrap">
+                <input type="text" name="postName" id="postName" disabled>
+              </div>
+            </div>
+          </div>
+        </li>  
+        <li class="item-content item-input">
+          <div class="item-inner">
+            <div class="item-title item-label">Game</div>
+             <div class="item-input-wrap">
+              <select id="selectGame" name="games">
+                <script type="text/template7" id="t7Game">
+                {{#each game}}
+                  <option value="{{idGame}}" {{selected}}>{{name}} ({{gameType}}-{{postType}})</option>
+                {{/each}}
+                </script>
+              </select>
+             </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label"></div>
+              <div class="item-input-wrap">
+                <a href="#" id="btnUpdateGame" class="button button-fill button-round color-black">UPDATE</a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </form>
+  </div>
+</div>

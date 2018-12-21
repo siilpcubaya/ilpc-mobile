@@ -1,0 +1,31 @@
+
+.fab-label {
+	font-family: Roboto,Noto,Helvetica,Arial,sans-serif;
+}
+
+/* Modal Sheet */
+.custom-modal{
+	top: 20%;
+	height: 60%;
+	left: 2%;
+	width: 96%;
+}
+
+.custom-modal > .toolbar {
+	font-size: 20px;
+}
+
+.custom-modal-inner > .block >
+.item-input-wrap {
+	padding-top: .5em;
+}
+
+.custom-modal-inner > .block >
+.item-input-wrap::after {
+	bottom: .3em;
+}
+
+.custom-modal-inner > .block >
+.item-input-wrap > input {
+	font-size: 18px;
+}

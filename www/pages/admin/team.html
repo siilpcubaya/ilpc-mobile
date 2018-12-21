@@ -1,0 +1,44 @@
+<div data-name="admin" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="#" data-panel="left" class="panel-open">
+            <i class="f7-icons">bars</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">TEAM</div>
+
+      <!-- Right Navbar -->
+      <div class="right">
+        <a class="link" id="btnSaveTeam">Save</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+    <div class="list simple-list">
+      <ul id="listTeams">
+        <script type="text/template7" id="t7Team" src="../js/my-app.js">
+        {{#each teams}}
+          <li>
+            <span>{{name}}</span>
+            <label class="toggle toggle-init color-black">
+              <input class="tog-input" type="checkbox" name="team" value="{{index}}" data-id="{{id}}" data-name="{{name}}"/>
+                <span class="toggle-icon tog-icon"></span>
+            </label>
+          </li>
+        {{/each}}
+        </script>
+      </ul>
+    </div>
+  </div>
+
+</div>

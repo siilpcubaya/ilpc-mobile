@@ -1,0 +1,72 @@
+<div data-name="admin" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="/posts/" data-panel="left">
+            <i class="f7-icons">left</i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navbar Title -->
+      <div class="title">INPUT GAME</div>
+    </div>
+  </div>
+
+  <!-- Scrollable page content -->
+  <div class="page-content">
+    <form action="" method="POST" class="form-ajax-submit">
+      <div class="list no-hairlines-md">
+        <ul>
+          <li id="post" class="item-content item-input">
+            <div class="item-inner">
+             <div class="item-title item-label">Game Name</div>
+             <div class="item-input">
+               <input type="text" id="name">
+             </div>
+            </div>
+          </li>
+          
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Game Type</div>
+               <div class="item-input-wrap">
+                <select id="games" name="games">
+                  <script type="text/template7" id="t7Game" src="../js/my-app.js">
+                  {{#each games}}
+                    <option value="{{idGame}}">{{gametype}}</option>
+                  {{/each}}
+                  </script>
+                </select>
+               </div>
+            </div>
+          </li>
+
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">Post Type</div>
+               <div class="item-input-wrap">
+                <select id="posts" name="posts">
+                  <script type="text/template7" id="t7Post" src="../js/my-app.js">
+                  {{#each posts}}
+                    <option value="{{idPost}}">{{posttype}}</option>
+                  {{/each}}
+                  </script>
+                </select>
+               </div>
+            </div>
+          </li>
+
+          <li class="block block-strong row">
+            <div class="col">
+              <input type="button" name="btnsubmit" id="btnsubmit" class="button button-fill button-round color-black" value="SUBMIT">
+            </div>
+          </li>
+        </ul>
+    </div>
+  </form>
+  </div>
+</div>
