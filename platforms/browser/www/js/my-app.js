@@ -35,9 +35,7 @@ var app = new Framework7({
 	  				username: username,
 	  				password: password
 	  			},
-	  			function(data) {
-	  				app.dialog.alert(data);
-	  				
+	  			function(data) {	  				
 	  				var obj = JSON.parse(data);
 					app.dialog.progress();
 
@@ -105,18 +103,19 @@ var app = new Framework7({
 					$$('#postName').append(obj['name']);
 				});
 
-	  	  	app.request.post(app_path + 'home.php',
+	  		app.request.post(app_path + 'home.php',
 				{
 					action: 'getTeamsNotDone',
 					idPost: idPost
 				},
 				function(data){
 					var obj = JSON.parse(data);
+					console.log(obj);
 					var html = Template7.compile($$('#t7TeamsNotDone').html())(obj);
 					$$('#listTeamsNotDone').html(html);
 				});
 
-	  		app.request.post(app_path + 'home.php', 
+  			app.request.post(app_path + 'home.php', 
 				{
 					action: 'getTeamsDone',
 					idPost: idPost
@@ -126,6 +125,66 @@ var app = new Framework7({
 					var html = Template7.compile($$('#t7TeamsDone').html())(obj);
 					$$('#listTeamsDone').html(html);
 				});
+
+  			//Pull to Refresh 
+	  		$$('.ptr-content').on('ptr:refresh', function(e) {
+	  			setTimeout(function() {
+	  				var idPost = localStorage.getItem('idPost');
+
+	  				app.request.post(app_path + 'home.php',
+					{
+						action: 'getTeamsNotDone',
+						idPost: idPost
+					},
+					function(data){
+						$$('#listTeamsNotDone').html(
+							'<script type="text/template7" id="t7TeamsNotDone">' +
+            				  '<li class="item-divider text-align-center">Not done yet</li>' +
+            				  '{{#each notdone}}' +
+              					'<li>' +
+                				  '<a href="/score/{{idTeam}}/" class="item-link item-content">' +
+                  					'<div class="item-inner">' +
+                    				  '<div class="item-title search-item">{{name}}</div>' +
+                  					'</div>' +
+            					  '</a>' +
+               					'</li>' +
+            				  '{{/each}}' +
+          					'</script>');
+
+						var obj = JSON.parse(data);
+						var html = Template7.compile($$('#t7TeamsNotDone').html())(obj);
+						$$('#listTeamsNotDone').html(html);
+					});
+
+		  			app.request.post(app_path + 'home.php', 
+					{
+						action: 'getTeamsDone',
+						idPost: idPost
+					},
+					function(data){
+						$$('#listTeamsDone').html(
+							'<script type="text/template7" id="t7TeamsDone">' +
+            				  '<li class="item-divider text-align-center">Done playing</li>' +
+            				  '{{#each done}}' +
+              					'<li>' +
+                				  '<a href="/score/{{idTeam}}/" class="item-link item-content">' +
+                  					'<div class="item-inner">' +
+                    				  '<div class="item-title search-item">{{name}}</div>' +
+                  					'</div>' +
+            					  '</a>' +
+               					'</li>' +
+            				  '{{/each}}' +
+          					'</script>');
+
+						var obj = JSON.parse(data);
+						var html = Template7.compile($$('#t7TeamsDone').html())(obj);
+						$$('#listTeamsDone').html(html);
+					});
+
+					e.detail();
+	  			}, 1000);
+	  		});
+	  	  	
 	  	  	
 	  	  	if(localStorage.idAdmin){
 				$$('.btnLogout').on('click', function() {
@@ -246,13 +305,23 @@ var app = new Framework7({
 	  	  	});
 
 	  	  	setInterval( function(){
+	  	  		console.log("Yes");
 				app.request.post(app_path + 'scoreboard.php',
 		  	  	{
 		  	  		action: 'getScore',
 		  	  		idPost: idPost
 		  	  	},
 		  	  	function(data){
-		  	  		$$('#t7Scoreboard').html();
+		  	  		$$('#listScoreboard').html(
+		  	  			'<script type="text/template7" id="t7Scoreboard">' +
+              				'{{#each teams}}' +
+                				'<tr>' +
+                  				  '<td class="label-cell">{{rank}}</td>' +
+				                  '<td class="label-cell">{{name}}</td>' +
+                				  '<td class="numeric-cell">{{score}}</td>' +
+                				'</tr>' +
+              				'{{/each}}' +
+            			'</script>');
 
 		  	  		var obj = JSON.parse(data);
 		  	  		var html = Template7.compile($$('#t7Scoreboard').html())(obj);
