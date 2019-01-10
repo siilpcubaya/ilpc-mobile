@@ -970,7 +970,7 @@ var app = new Framework7({
 	]
 });
 
-var mainView = app.views.create('.view-main', { url: '/timer/' });
+var mainView = app.views.create('.view-main', { url: '/login/' });
 
 function openNotif() {
 	var notif = app.notification.create({
