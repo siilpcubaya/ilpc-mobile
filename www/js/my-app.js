@@ -5,6 +5,8 @@ var app_path = base_path + 'application/'; // php folder path
 var asset_path = app_path + 'assets/'; // asset folder path
 
 var timer;
+var globalTimer;
+var refreshScoreboard;
 
 var app = new Framework7({
 	name: 'ILPC Mobile', // app name
@@ -305,7 +307,7 @@ var app = new Framework7({
 				$$('#listScoreboard').html(html);
 	  	  	});
 
-	  	  	var refreshScoreboard = setInterval( function(){
+	  	  	refreshScoreboard = setInterval(function(){
 				app.request.post(app_path + 'scoreboard.php',
 		  	  	{
 		  	  		action: 'getScore',
@@ -329,6 +331,9 @@ var app = new Framework7({
 		  	  	});
 			}, 5000);
 
+	  	  },
+	  	  pageBeforeOut: function(e, page) {
+	  	  	// clearInterval(refreshScoreboard);
 	  	  }
 	  	}
 	  },
@@ -337,6 +342,7 @@ var app = new Framework7({
 	  	url: 'pages/timer.html',
 	  	on: {
 	  	  pageInit: function(e, page) {
+	  	  	clearInterval(globalTimer);
 
 	  	  	$$('.button').on('click', function() {
 	  	  		var gauge = app.gauge.get('.timer-gauge');
@@ -438,7 +444,7 @@ var app = new Framework7({
   	  			if(sec < 10) sec = "0" + sec.toString();
 	  	  	}
 
-	  	  	var timerGauge = app.gauge.create({
+	  	  	timerGauge = app.gauge.create({
 			  el: '.timer-gauge',
 			  type: 'circle',
 			  borderColor: '#000',
@@ -446,7 +452,6 @@ var app = new Framework7({
 			  valueText: valueText,
 			  valueTextColor: '#000',
 			});
-
 
 	  	  	$$('#start').on('click', function() {
 	  	  		var gauge = app.gauge.get('.timer-gauge');
@@ -466,15 +471,14 @@ var app = new Framework7({
 
 			  	  		sessionStorage.setItem('t-tick', 'true');
 			  	  		sessionStorage.setItem('t-sub', substrahend);
+		  	  			sessionStorage.setItem('t-time', totalTime);
 
 		  	  			timer = setInterval(function() {
-
-		  	  				var gauge = app.gauge.get('.timer-gauge');
-			  	  			var gValue = gauge.params.value;
-
-			  	  			sessionStorage.setItem('t-time', totalTime);
+		  	  				var gValue = sessionStorage.getItem('t-time') * sessionStorage.getItem('t-sub');
 
 			  	  			totalTime--;
+			  	  			sessionStorage.setItem('t-time', totalTime);
+
 			  	  			hour = parseInt(totalTime / 3600);
 			  	  			min = parseInt(totalTime % 3600 / 60);
 			  	  			sec = parseInt(totalTime % 3600 % 60);
@@ -497,7 +501,7 @@ var app = new Framework7({
 				  	  			if(min < 10) min = "0" + min.toString();
 				  	  			if(sec < 10) sec = "0" + sec.toString();
 
-			  	  				gauge.update({
+			  	  				app.gauge.update({
 				  	  			  value: 1,
 								  valueText: hour + ':' + min + ':' + sec,
 								});
@@ -568,6 +572,57 @@ var app = new Framework7({
 	  	  		$$('#start').text('Start');
 	  	  		$$('.col-content').css('visibility', 'visible');
 	  	  	}
+	  	  },
+	  	  pageBeforeOut: function(e, page) {
+	  	  	clearInterval(timer);
+
+	  	  	var substrahend = sessionStorage.getItem('t-sub');
+
+	  	  	globalTimer = setInterval(function() {
+	  	  		var totalTime = sessionStorage.getItem('t-time');
+  				var gValue = totalTime * substrahend;
+
+	  			totalTime--;
+	  			sessionStorage.setItem('t-time', totalTime);
+
+	  			hour = parseInt(totalTime / 3600);
+	  			min = parseInt(totalTime % 3600 / 60);
+	  			sec = parseInt(totalTime % 3600 % 60);
+
+	  			if(hour < 10) hour = "0" + hour.toString();
+	  			if(min < 10) min = "0" + min.toString();
+	  			if(sec < 10) sec = "0" + sec.toString();
+
+	  			app.gauge.update({
+	  			  value: gValue - substrahend,
+				  valueText: hour + ':' + min + ':' + sec,
+				});
+
+	  			if(totalTime <= 0) {
+	  				var hour = $$('#input-hour').val();
+	  				var min = $$('#input-minute').val();
+					var sec = $$('#input-second').val();
+
+					if(hour < 10) hour = "0" + hour.toString();
+	  	  			if(min < 10) min = "0" + min.toString();
+	  	  			if(sec < 10) sec = "0" + sec.toString();
+
+	  				app.gauge.update({
+  			 		  value: 1,
+			  		  valueText: hour + ':' + min + ':' + sec,
+					});
+
+					sessionStorage.setItem('t-tick', 'false');
+					sessionStorage.setItem('t-time', 0);
+
+	  				$$('#start').text('Start');
+	  				$$('.col-content').css('visibility', 'visible');
+	  				openNotif();
+
+	  				clearInterval(timer);
+	  			}
+
+	  		}, 1000);
 	  	  }
 	  	}
 	  },
