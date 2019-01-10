@@ -1,0 +1,85 @@
+<div data-name="timer" class="page">
+  <!-- Top Navbar -->
+  <div class="navbar no-shadow color-black">
+    <div class="navbar-inner">
+      <!-- Left Navbar -->
+      <div class="left">
+        <div class="block">
+          <a href="/home/" data-panel="left">
+            <i class="f7-icons">left</i>
+          </a>
+        </div>
+      </div>
+      <!-- Navbar Title -->
+      <div class="title">Timer</div>
+    </div>
+  </div>
+
+  <div class="page-content">
+    
+    <div class="block text-align-center">
+      <div
+        class="gauge gauge-init timer-gauge"
+      ></div>
+      <p class="segmented segmented-raised">
+        <a href="#" class="button" data-value="3">3"</a>
+        <a href="#" class="button" data-value="5">5"</a>
+        <a href="#" class="button" data-value="10">10"</a>
+        <a href="#" class="button" data-value="15">15"</a>
+        <a href="#" class="button" data-value="30">30"</a>
+      </p>
+    </div>
+
+    <div class="card card-outline">
+      <div class="card-content">
+
+        <div class="block">
+          <div class="row margin-top">
+            <div class="col" style="height: 28px; margin-top: auto; margin-left: auto;">Hour</div>
+            <div class="col col-content">
+              <div class="stepper stepper-small stepper-round stepper-fill stepper-init color-black" id="stepHour">
+                <div class="stepper-button-minus"></div>
+                <div class="stepper-input-wrap">
+                  <input id="input-hour" type="number" value="0" min="0" max="24" step="1">
+                </div>
+                <div class="stepper-button-plus"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row margin-top">
+            <div class="col" style="height: 28px; margin-top: auto; margin-left: auto;">Minute</div>
+            <div class="col col-content">
+              <div class="stepper stepper-small stepper-round stepper-fill stepper-init color-black" id="stepMin">
+                <div class="stepper-button-minus"></div>
+                <div class="stepper-input-wrap">
+                  <input id="input-minute" type="number" value="0" min="0" max="59" step="1">
+                </div>
+                <div class="stepper-button-plus"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row margin-top margin-bottom">
+            <div class="col" style="height: 28px; margin-top: auto; margin-left: auto;">Second</div>
+            <div class="col col-content">
+              <div class="stepper stepper-small stepper-round stepper-fill stepper-init color-black" id="stepSec">
+                <div class="stepper-button-minus"></div>
+                <div class="stepper-input-wrap">
+                  <input id="input-second" type="number" value="0" min="0" max="59" step="1">
+                </div>
+                <div class="stepper-button-plus"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer">
+        <a href="#" class="link" id="start">Start</a>
+        <a href="#" class="link" id="restart">Restart</a>
+      </div>
+    </div>
+
+</div>
+
+  </div>
+</div>

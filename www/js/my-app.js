@@ -4,6 +4,8 @@ var base_path = 'http://ilpc-mobile.ifubaya.com/'; // root path
 var app_path = base_path + 'application/'; // php folder path
 var asset_path = app_path + 'assets/'; // asset folder path
 
+var timer;
+
 var app = new Framework7({
 	name: 'ILPC Mobile', // app name
 	id: 'com.ilpc.mobile', // package name
@@ -110,7 +112,6 @@ var app = new Framework7({
 				},
 				function(data){
 					var obj = JSON.parse(data);
-					console.log(obj);
 					var html = Template7.compile($$('#t7TeamsNotDone').html())(obj);
 					$$('#listTeamsNotDone').html(html);
 				});
@@ -304,8 +305,7 @@ var app = new Framework7({
 				$$('#listScoreboard').html(html);
 	  	  	});
 
-	  	  	setInterval( function(){
-	  	  		console.log("Yes");
+	  	  	var refreshScoreboard = setInterval( function(){
 				app.request.post(app_path + 'scoreboard.php',
 		  	  	{
 		  	  		action: 'getScore',
@@ -329,6 +329,245 @@ var app = new Framework7({
 		  	  	});
 			}, 5000);
 
+	  	  }
+	  	}
+	  },
+	  {
+	  	path: '/timer/',
+	  	url: 'pages/timer.html',
+	  	on: {
+	  	  pageInit: function(e, page) {
+
+	  	  	$$('.button').on('click', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+
+	  	  		if($$(this).data('value') != '60') {
+	  	  			var value = $$(this).data('value');
+
+	  	  			var stepHour = app.stepper.get('#stepHour');
+	  	  			var stepMin = app.stepper.get('#stepMin');
+	  	  			var stepSec = app.stepper.get('#stepSec');
+
+	  	  			stepHour.setValue(0);
+	  	  			stepMin.setValue(parseInt(value));
+	  	  			stepSec.setValue(0);
+
+	  	  			if(parseInt(value) < 10) value = "0" + value;
+
+	  	  			gauge.update({
+					  valueText: "00" + ':' + value + ':' + "00",
+					});
+	  	  		}
+	  	  		else {
+	  	  			stepHour.setValue(1);
+	  	  			stepMin.setValue(0);
+	  	  			stepSec.setValue(0);
+
+	  	  			gauge.update({
+					  valueText: "01" + ':' + "00" + ':' + "00",
+					});
+	  	  		}
+	  	  	});
+
+	  	  	$$('#input-hour').on('change', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+
+	  	  		var valtext = gauge.params.valueText.split(':');
+	  	  		var hour = $$('#input-hour').val();
+	  	  		var min = valtext[1];
+	  	  		var sec = valtext[2];
+
+	  	  		if(hour < 10) hour = '0' + hour.toString();
+	  	  		else hour = hour.toString();
+
+				gauge.update({
+				  value: 1,
+				  valueText: hour + ':' + min + ':' + sec,
+				});
+	  	  	});
+
+	  	  	$$('#input-minute').on('change', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+
+	  	  		var valtext = gauge.params.valueText.split(':');
+	  	  		var hour = valtext[0];
+	  	  		var min = $$('#input-minute').val();
+	  	  		var sec = valtext[2];
+
+	  	  		if(min < 10) min = '0' + min.toString();
+	  	  		else min = min.toString();
+
+				gauge.update({
+				  value: 1,
+				  valueText: hour + ':' + min + ':' + sec,
+				});
+	  	  	});
+
+	  	  	$$('#input-second').on('change', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+
+	  	  		var valtext = gauge.params.valueText.split(':');
+	  	  		var hour = valtext[0];
+	  	  		var min = valtext[1];
+	  	  		var sec = $$('#input-second').val();
+
+	  	  		if(sec < 10) sec = '0' + sec.toString();
+	  	  		else sec = sec.toString();
+
+				gauge.update({
+				  value: 1,
+				  valueText: hour + ':' + min + ':' + sec,
+				});
+	  	  	});
+
+	  	  	
+
+	  	  	var value = 1;
+	  	  	var valueText = "00:00:00";
+
+	  	  	if(localStorage.getItem('t-tick') == 'true') {
+	  	  		var totalTime = localStorage.getItem('t-time');
+	  	  		value = totalTime * localStorage.getItem('t-sub');
+
+	  	  		hour = parseInt(totalTime / 3600);
+  	  			min = parseInt(totalTime % 3600 / 60);
+  	  			sec = parseInt(totalTime % 3600 % 60);
+
+  	  			if(hour < 10) hour = "0" + hour.toString();
+  	  			if(min < 10) min = "0" + min.toString();
+  	  			if(sec < 10) sec = "0" + sec.toString();
+	  	  	}
+
+	  	  	var timerGauge = app.gauge.create({
+			  el: '.timer-gauge',
+			  type: 'circle',
+			  borderColor: '#000',
+			  value: value,
+			  valueText: valueText,
+			  valueTextColor: '#000',
+			});
+
+
+	  	  	$$('#start').on('click', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+	  	  		var valtext = gauge.params.valueText.split(':');
+	  	  		var hour = valtext[0];
+	  	  		var min = valtext[1];
+	  	  		var sec = valtext[2]
+
+	  	  		var totalTime = parseInt(valtext[0]) * 3600 + parseInt(valtext[1]) * 60 + parseInt(valtext[2]) * 1;
+	  	  		var substrahend = 1.0 / totalTime;
+
+	  	  		if($$(this).text() == "Start") {
+	  	  			if(totalTime > 0){
+
+			  	  		$$(this).text('Pause');
+			  	  		$$('.col-content').css('visibility', 'hidden');
+
+			  	  		sessionStorage.setItem('t-tick', 'true');
+			  	  		sessionStorage.setItem('t-sub', substrahend);
+
+		  	  			timer = setInterval(function() {
+
+		  	  				var gauge = app.gauge.get('.timer-gauge');
+			  	  			var gValue = gauge.params.value;
+
+			  	  			sessionStorage.setItem('t-time', totalTime);
+
+			  	  			totalTime--;
+			  	  			hour = parseInt(totalTime / 3600);
+			  	  			min = parseInt(totalTime % 3600 / 60);
+			  	  			sec = parseInt(totalTime % 3600 % 60);
+
+			  	  			if(hour < 10) hour = "0" + hour.toString();
+			  	  			if(min < 10) min = "0" + min.toString();
+			  	  			if(sec < 10) sec = "0" + sec.toString();
+
+			  	  			gauge.update({
+			  	  			  value: gValue - substrahend,
+							  valueText: hour + ':' + min + ':' + sec,
+							});
+
+			  	  			if(totalTime <= 0) {
+			  	  				var hour = $$('#input-hour').val();
+			  	  				var min = $$('#input-minute').val();
+	  	  						var sec = $$('#input-second').val();
+
+	  	  						if(hour < 10) hour = "0" + hour.toString();
+				  	  			if(min < 10) min = "0" + min.toString();
+				  	  			if(sec < 10) sec = "0" + sec.toString();
+
+			  	  				gauge.update({
+				  	  			  value: 1,
+								  valueText: hour + ':' + min + ':' + sec,
+								});
+
+								sessionStorage.setItem('t-tick', 'false');
+								sessionStorage.setItem('t-time', 0);
+
+			  	  				$$('#start').text('Start');
+			  	  				$$('.col-content').css('visibility', 'visible');
+			  	  				openNotif();
+
+			  	  				clearInterval(timer);
+			  	  			}
+
+			  	  		}, 1000);
+	  	  			}
+	  	  		}
+	  	  		else if($$(this).text() == 'Pause') {
+	  	  			var gauge = app.gauge.get('.timer-gauge');
+
+		  	  		var totalTime = sessionStorage.getItem('t-time');
+		  	  		var value = totalTime * sessionStorage.getItem('t-sub');
+
+		  	  		hour = parseInt(totalTime / 3600);
+	  	  			min = parseInt(totalTime % 3600 / 60);
+	  	  			sec = parseInt(totalTime % 3600 % 60);
+
+	  	  			$$('#input-hour').val(hour);
+	  	  			$$('#input-minute').val(min);
+	  	  			$$('#input-second').val(sec);
+
+	  	  			$$(this).text('Start');
+	  	  			$$('.col-content').css('visibility', 'visible');
+
+	  	  			sessionStorage.setItem('t-tick', 'false');
+
+	  	  			clearInterval(timer);
+	  	  		}
+	  	  	});
+
+	  	  	$$('#restart').on('click', function() {
+	  	  		var gauge = app.gauge.get('.timer-gauge');
+
+	  	  		gauge.update({
+  	  			  value: 1,
+				  valueText: "00:00:00"
+				});
+
+				sessionStorage.setItem('t-tick', 'false');
+				sessionStorage.setItem('t-sub', 0);
+				sessionStorage.setItem('t-time', 0);
+
+				$$('input').val("0");
+				$$('#start').text('Start');
+				$$('.col-content').css('visibility', 'visible');
+
+				clearInterval(timer);
+	  	  	});
+
+	  	  },
+	  	  pageAfterIn: function(e, page) {
+	  	  	if(sessionStorage.getItem('t-tick') == 'true') {
+	  	  		$$('#start').trigger('click');
+	  	  		$$('#start').text('Pause');
+	  	  		$$('.col-content').css('visibility', 'hidden');
+	  	  	}
+	  	  	else {
+	  	  		$$('#start').text('Start');
+	  	  		$$('.col-content').css('visibility', 'visible');
+	  	  	}
 	  	  }
 	  	}
 	  },
@@ -402,10 +641,6 @@ var app = new Framework7({
 				var gameName = $$('#gameName').val();
 				var gameType = $$('select[name="gameType"]').val();
 				var postType = $$('select[name="postType"]').val();
-
-				console.log(gameName);
-				console.log(gameType);
-				console.log(postType);
 
 				app.request.post(app_path + 'game.php',
 				{
@@ -735,4 +970,21 @@ var app = new Framework7({
 	]
 });
 
-var mainView = app.views.create('.view-main', { url: '/login/' });
+var mainView = app.views.create('.view-main', { url: '/timer/' });
+
+function openNotif() {
+	var notif = app.notification.create({
+	  title: 'Timer',
+	  titleRightText: 'now',
+	  subtitle: "Timer Stopped",
+	  text: "Your timer has stopped. Check it now.",
+	  closeOnClick: true,
+	  on: {
+	    close: function () {
+	      app.views.main.router.navigate('/timer/');
+	    },
+	  },
+	});
+
+	notif.open();
+}
