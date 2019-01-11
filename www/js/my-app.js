@@ -333,7 +333,7 @@ var app = new Framework7({
 
 	  	  },
 	  	  pageBeforeOut: function(e, page) {
-	  	  	// clearInterval(refreshScoreboard);
+	  	  	clearInterval(refreshScoreboard);
 	  	  }
 	  	}
 	  },
@@ -426,14 +426,13 @@ var app = new Framework7({
 				});
 	  	  	});
 
-	  	  	
-
+	  	  	// START TIMER GAUGE INITIALIZE //
 	  	  	var value = 1;
 	  	  	var valueText = "00:00:00";
 
-	  	  	if(localStorage.getItem('t-tick') == 'true') {
-	  	  		var totalTime = localStorage.getItem('t-time');
-	  	  		value = totalTime * localStorage.getItem('t-sub');
+	  	  	if(sessionStorage.getItem('t-tick') == 'true') {
+	  	  		var totalTime = sessionStorage.getItem('t-time');
+	  	  		value = totalTime * sessionStorage.getItem('t-sub');
 
 	  	  		hour = parseInt(totalTime / 3600);
   	  			min = parseInt(totalTime % 3600 / 60);
@@ -442,9 +441,11 @@ var app = new Framework7({
   	  			if(hour < 10) hour = "0" + hour.toString();
   	  			if(min < 10) min = "0" + min.toString();
   	  			if(sec < 10) sec = "0" + sec.toString();
+
+  	  			valueText = hour + ':' + min + ':' + sec;
 	  	  	}
 
-	  	  	timerGauge = app.gauge.create({
+	  	  	var timerGauge = app.gauge.create({
 			  el: '.timer-gauge',
 			  type: 'circle',
 			  borderColor: '#000',
@@ -452,6 +453,11 @@ var app = new Framework7({
 			  valueText: valueText,
 			  valueTextColor: '#000',
 			});
+
+			if(sessionStorage.getItem('t-tick') == 'true') {
+				$$('#start').trigger('click');
+			}
+			// END TIMER GAUGE INITIALIZE //
 
 	  	  	$$('#start').on('click', function() {
 	  	  		var gauge = app.gauge.get('.timer-gauge');
@@ -461,7 +467,12 @@ var app = new Framework7({
 	  	  		var sec = valtext[2]
 
 	  	  		var totalTime = parseInt(valtext[0]) * 3600 + parseInt(valtext[1]) * 60 + parseInt(valtext[2]) * 1;
-	  	  		var substrahend = 1.0 / totalTime;
+  	  			var substrahend = 1.0 / totalTime;
+
+  	  			if(sessionStorage.getItem('t-tick') == 'true') {
+  	  				totalTime = sessionStorage.getItem('t-time');
+  	  				substrahend = sessionStorage.getItem('t-sub');
+  	  			}
 
 	  	  		if($$(this).text() == "Start") {
 	  	  			if(totalTime > 0){
@@ -474,7 +485,8 @@ var app = new Framework7({
 		  	  			sessionStorage.setItem('t-time', totalTime);
 
 		  	  			timer = setInterval(function() {
-		  	  				var gValue = sessionStorage.getItem('t-time') * sessionStorage.getItem('t-sub');
+		  	  				// console.log("timer");
+		  	  				var gaugeValue = totalTime * substrahend;
 
 			  	  			totalTime--;
 			  	  			sessionStorage.setItem('t-time', totalTime);
@@ -488,7 +500,7 @@ var app = new Framework7({
 			  	  			if(sec < 10) sec = "0" + sec.toString();
 
 			  	  			gauge.update({
-			  	  			  value: gValue - substrahend,
+			  	  			  value: gaugeValue - substrahend,
 							  valueText: hour + ':' + min + ':' + sec,
 							});
 
@@ -501,7 +513,7 @@ var app = new Framework7({
 				  	  			if(min < 10) min = "0" + min.toString();
 				  	  			if(sec < 10) sec = "0" + sec.toString();
 
-			  	  				app.gauge.update({
+			  	  				gauge.update({
 				  	  			  value: 1,
 								  valueText: hour + ':' + min + ':' + sec,
 								});
@@ -511,9 +523,10 @@ var app = new Framework7({
 
 			  	  				$$('#start').text('Start');
 			  	  				$$('.col-content').css('visibility', 'visible');
-			  	  				openNotif();
 
+				  				clearInterval(globalTimer);
 			  	  				clearInterval(timer);
+				  				openNotif();
 			  	  			}
 
 			  	  		}, 1000);
@@ -538,6 +551,7 @@ var app = new Framework7({
 
 	  	  			sessionStorage.setItem('t-tick', 'false');
 
+	  	  			clearInterval(globalTimer);
 	  	  			clearInterval(timer);
 	  	  		}
 	  	  	});
@@ -558,6 +572,7 @@ var app = new Framework7({
 				$$('#start').text('Start');
 				$$('.col-content').css('visibility', 'visible');
 
+				clearInterval(globalTimer);
 				clearInterval(timer);
 	  	  	});
 
@@ -578,51 +593,56 @@ var app = new Framework7({
 
 	  	  	var substrahend = sessionStorage.getItem('t-sub');
 
-	  	  	globalTimer = setInterval(function() {
-	  	  		var totalTime = sessionStorage.getItem('t-time');
-  				var gValue = totalTime * substrahend;
+	  	  	if(sessionStorage.getItem('t-tick') == 'true') {
+	  	  		globalTimer = setInterval(function() {
+		  	  		// console.log("globalTimer");
+		  	  		var totalTime = sessionStorage.getItem('t-time');
+	  				var gaugeValue = totalTime * substrahend;
 
-	  			totalTime--;
-	  			sessionStorage.setItem('t-time', totalTime);
+		  			totalTime--;
+		  			sessionStorage.setItem('t-time', totalTime);
 
-	  			hour = parseInt(totalTime / 3600);
-	  			min = parseInt(totalTime % 3600 / 60);
-	  			sec = parseInt(totalTime % 3600 % 60);
+		  			hour = parseInt(totalTime / 3600);
+		  			min = parseInt(totalTime % 3600 / 60);
+		  			sec = parseInt(totalTime % 3600 % 60);
 
-	  			if(hour < 10) hour = "0" + hour.toString();
-	  			if(min < 10) min = "0" + min.toString();
-	  			if(sec < 10) sec = "0" + sec.toString();
+		  			if(hour < 10) hour = "0" + hour.toString();
+		  			if(min < 10) min = "0" + min.toString();
+		  			if(sec < 10) sec = "0" + sec.toString();
 
-	  			app.gauge.update({
-	  			  value: gValue - substrahend,
-				  valueText: hour + ':' + min + ':' + sec,
-				});
-
-	  			if(totalTime <= 0) {
-	  				var hour = $$('#input-hour').val();
-	  				var min = $$('#input-minute').val();
-					var sec = $$('#input-second').val();
-
-					if(hour < 10) hour = "0" + hour.toString();
-	  	  			if(min < 10) min = "0" + min.toString();
-	  	  			if(sec < 10) sec = "0" + sec.toString();
-
-	  				app.gauge.update({
-  			 		  value: 1,
-			  		  valueText: hour + ':' + min + ':' + sec,
+		  			app.gauge.update({
+		  			  value: gaugeValue - substrahend,
+					  valueText: hour + ':' + min + ':' + sec,
 					});
 
-					sessionStorage.setItem('t-tick', 'false');
-					sessionStorage.setItem('t-time', 0);
+		  			if(totalTime <= 0) {
+		  				var hour = $$('#input-hour').val();
+		  				var min = $$('#input-minute').val();
+						var sec = $$('#input-second').val();
 
-	  				$$('#start').text('Start');
-	  				$$('.col-content').css('visibility', 'visible');
-	  				openNotif();
+						if(hour < 10) hour = "0" + hour.toString();
+		  	  			if(min < 10) min = "0" + min.toString();
+		  	  			if(sec < 10) sec = "0" + sec.toString();
 
-	  				clearInterval(timer);
-	  			}
+		  				app.gauge.update({
+	  			 		  value: 1,
+				  		  valueText: hour + ':' + min + ':' + sec,
+						});
 
-	  		}, 1000);
+						sessionStorage.setItem('t-tick', 'false');
+						sessionStorage.setItem('t-time', 0);
+
+		  				$$('#start').text('Start');
+		  				$$('.col-content').css('visibility', 'visible');
+
+		  				clearInterval(timer);
+		  				clearInterval(globalTimer);
+		  				openNotif();
+
+		  			}
+
+		  		}, 1000);
+	  	  	}
 	  	  }
 	  	}
 	  },
