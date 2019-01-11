@@ -15,6 +15,12 @@ var app = new Framework7({
 	theme: 'md',
 	cache: false,
 	panel: { swipe: 'left' },
+	pushState: true,
+	methods: {
+		onBackKeyDown: function() {
+			mainView.router.back();
+		}
+	},
 	routes: [
 	  {
 	  	path: '/index/',
@@ -1062,4 +1068,14 @@ function openNotif() {
 	});
 
 	notif.open();
+}
+
+document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady() {
+  document.addEventListener("backbutton", onBackKeyDown, false);
+}
+
+function onBackKeyDown(){
+  mainView.router.back();
 }
