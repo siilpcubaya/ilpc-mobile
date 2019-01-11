@@ -1,5 +1,9 @@
 var $$ = Dom7;
 
+$(document).ready(function() {
+  document.addEventListener('deviceready', onDeviceReady, false);
+});
+
 var base_path = 'http://ilpc-mobile.ifubaya.com/'; // root path
 var app_path = base_path + 'application/'; // php folder path
 var asset_path = app_path + 'assets/'; // asset folder path
@@ -15,8 +19,10 @@ var app = new Framework7({
 	theme: 'md',
 	cache: false,
 	panel: { swipe: 'left' },
-	pushState: true,
 	methods: {
+		onPageBack: function (app, page) {
+		   myApp.closePanel();
+		},
 		onBackKeyDown: function() {
 			mainView.router.back();
 		}
@@ -1070,12 +1076,10 @@ function openNotif() {
 	notif.open();
 }
 
-document.addEventListener('deviceready', onDeviceReady, false);
+function onBackKeyDown(){
+  mainView.router.back();
+}
 
 function onDeviceReady() {
   document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
-function onBackKeyDown(){
-  mainView.router.back();
 }
