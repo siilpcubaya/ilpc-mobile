@@ -469,7 +469,7 @@ var app = new Framework7({
 	  	  		var totalTime = parseInt(valtext[0]) * 3600 + parseInt(valtext[1]) * 60 + parseInt(valtext[2]) * 1;
   	  			var substrahend = 1.0 / totalTime;
 
-  	  			if(sessionStorage.getItem('t-tick') == 'true') {
+  	  			if(sessionStorage.getItem('t-sub') > 0) {
   	  				totalTime = sessionStorage.getItem('t-time');
   	  				substrahend = sessionStorage.getItem('t-sub');
   	  			}
@@ -519,7 +519,8 @@ var app = new Framework7({
 								});
 
 								sessionStorage.setItem('t-tick', 'false');
-								sessionStorage.setItem('t-time', 0);
+								// sessionStorage.setItem('t-time', 0);
+								sessionStorage.setItem('t-sub', 0);
 
 			  	  				$$('#start').text('Start');
 			  	  				$$('.col-content').css('visibility', 'visible');
@@ -565,8 +566,8 @@ var app = new Framework7({
 				});
 
 				sessionStorage.setItem('t-tick', 'false');
+				// sessionStorage.setItem('t-time', 0);
 				sessionStorage.setItem('t-sub', 0);
-				sessionStorage.setItem('t-time', 0);
 
 				$$('input').val("0");
 				$$('#start').text('Start');
@@ -630,7 +631,8 @@ var app = new Framework7({
 						});
 
 						sessionStorage.setItem('t-tick', 'false');
-						sessionStorage.setItem('t-time', 0);
+						// sessionStorage.setItem('t-time', 0);
+						sessionStorage.setItem('t-sub', 0);
 
 		  				$$('#start').text('Start');
 		  				$$('.col-content').css('visibility', 'visible');
