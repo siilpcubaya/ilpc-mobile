@@ -90,6 +90,10 @@ var app = new Framework7({
 	  	  }
 	  	}
 	  },
+	  {
+		path: '/about/',
+		url: 'pages/about.html'
+	  },
 
 	  ///////////////////
 	  // GUARD ROUTING //
